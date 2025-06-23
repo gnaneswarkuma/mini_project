@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Classic Burger Recipe</title>
+  <style>body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f9f9f9;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.recipe-card {
+  max-width: 500px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.recipe-card:hover {
+  transform: scale(1.02);
+}
+
+.recipe-img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.meta span {
+  display: inline-block;
+  margin-right: 10px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+button {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: #ff9f1c;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #e07b00;
+}
+
+ul, ol {
+  margin-top: 10px;
+  padding-left: 20px;
+}
+
+li {
+  margin-bottom: 6px;
+  transition: color 0.3s ease;
+}
+
+li:hover {
+  color: #ff9f1c;
+}
+
+.hidden {
+  display: none;
+}
+
+#progress-bar-container {
+  margin-top: 15px;
+  background: #eee;
+  border-radius: 5px;
+  overflow: hidden;
+  height: 10px;
+}
+
+#progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #4caf50;
+  transition: width 0.5s ease;
+}</style>
+</head>
+<body>
+  <div class="recipe-card">
+    <h1>🍔 Classic Burger</h1>
+    <img src="burger.jpg" alt="Delicious Burger" class="recipe-img"/>
+
+    <div class="meta">
+      <span>Prep Time: 15 min</span>
+      <span>Cook Time: 10 min</span>
+      <span>Serves: 1</span>
+    </div>
+
+    <button id="toggle-ingredients">Show Ingredients</button>
+    <ul id="ingredients" class="hidden">
+      <li>Burger bun</li>
+      <li>Beef patty</li>
+      <li>Lettuce</li>
+      <li>Cheese slice</li>
+      <li>Tomato</li>
+      <li>Onion</li>
+      <li>Condiments</li>
+    </ul>
+
+    <button id="start-cooking">Start Cooking</button>
+    <ol id="steps" class="hidden">
+      <li>Grill the beef patty.</li>
+      <li>Toast the bun.</li>
+      <li>Assemble with veggies, cheese, and condiments.</li>
+      <li>Serve hot!</li>
+    </ol>
+
+    <div id="progress-bar-container">
+      <div id="progress-bar"></div>
+    </div>
+  </div>
+
+  <script >
+    const toggleBtn = document.getElementById('toggle-ingredients');
+const ingredients = document.getElementById('ingredients');
+const startBtn = document.getElementById('start-cooking');
+const steps = document.getElementById('steps');
+const progressBar = document.getElementById('progress-bar');
+
+toggleBtn.addEventListener('click', () => {
+  ingredients.classList.toggle('hidden');
+  toggleBtn.textContent = ingredients.classList.contains('hidden') ? 'Show Ingredients' : 'Hide Ingredients';
+});
+
+let currentStep = 0;
+const stepElements = steps.getElementsByTagName('li');
+
+startBtn.addEventListener('click', () => {
+  steps.classList.remove('hidden');
+  stepElements[currentStep]?.classList.add('active');
+  progressBar.style.width = `${((currentStep + 1) / stepElements.length) * 100}%`;
+
+  startBtn.textContent = 'Next Step';
+  
+  startBtn.addEventListener('click', () => {
+    if (currentStep < stepElements.length - 1) {
+      stepElements[currentStep].classList.remove('active');
+      currentStep++;
+      stepElements[currentStep].classList.add('active');
+      progressBar.style.width = `${((currentStep + 1) / stepElements.length) * 100}%`;
+    } else {
+      startBtn.textContent = 'All Steps Done!';
+    }
+  }, { once: true });
+});
+  </script>
+</body>
+</html>
